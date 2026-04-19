@@ -25,6 +25,12 @@ body {
     font-size: 2rem;
 }
 
+.btn {
+    width: 150px;
+}
+
+
+
 footer {
     background: #222;
     color: white;
