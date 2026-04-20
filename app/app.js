@@ -1,250 +1,147 @@
-$( document ).ready(function() {
+$(document).ready(function () {
   console.log("App Started.....");
 
+  let quiz = null;
+  let resultConfig = null;
+  let currentQuestion = {};
+  let current = 0;
+  let correct = 0;
+  let wrong = 0;
+  let answered = false;
 
-    let quiz = [];
-    let currentQuestion = {};
-    let current = 0;
-    let correct = 0;
-    let wrong = 0;
-    let answered = false;
-	
-	$("#codeDiv").hide();
-	$("#nextBtn").hide();
-	$("#restartBtn").hide();
+  $("#quiz-page").hide();
+  $("#selectDataFileDialog").hide();
 
-    // ================= LOAD FILE =================
-      $("#fileInput").on("change", function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
+  function validateConfig(json) {
+        const result = {
+          hasExamName: false,
+          hasShuffleQuestions: false,
+        };
 
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const data = JSON.parse(e.target.result);
-            quiz = data;
-            startQuiz();
-      };
-
-      reader.readAsText(file);
-	  
-      });
-
-    // ================= START =================
-    function startQuiz() {
-        current = 0;
-        correct = 0;
-        wrong = 0;
-		
-		hideComponents(true);
-
-        loadForm(); 
-
-    }
-
-    // ================= LOAD FORM =================
-    function loadForm(){
-
-        currentQuestion = quiz[current];
-
-        loadQuestion();
-
-        if(currentQuestion.code !== "" && currentQuestion.language !== ""){
-          loadCode();
+        // Check exam_name
+        if (json?.config?.exam_name) {
+          result.hasExamName = true;
         }
 
-        if(currentQuestion.description_question !== ""){
-          loadDescriptionQuestion()
-        }else{
-          $("#description-question").text("");
+        // Check shuffle_questions
+        if (typeof json?.config?.shuffle_questions === "boolean") {
+          result.hasShuffleQuestions = true;
         }
-		
-		$("#nextBtn").show();
-		$("#restartBtn").show();
-		
 
-    }
-
-
-
-   // ================= LOAD QUESTION =================
-    function loadQuestion() {
-      answered = false;
-      $("#feedback").text("");
-      $("#result").text("");
-
-      const total = quiz.length;
-	  const question = $("#question");
-	  const questionCounter = $("#questionCounter");
-	  
-	  question.show();
-	  questionCounter.show();
-
-      // Counter
-      questionCounter.text(`Question ${current + 1} of ${total}`);
-
-      // Question
-      question.html(currentQuestion.question);
-
-      // Options
-      $("#options").empty();
-	  $("#options").show();
-
-      $.each(currentQuestion.options, function (key, value) {
-        const btn = $("<button>")
-          .addClass("btn btn-outline-primary w-100 text-start mb-2")
-          .html(`${key}: ${value}`)
-          .on("click", function () {
-            selectOption(key, $(this));
-          });
-
-        $("#options").append(btn);
-      });
-    }
-
-   // ================= LOAD CODE =================
-    function loadCode() {
-		
-		
-	  $("#codeDiv").show();
-
-      const codeBlock = $("#codeBlock");
-
-      codeBlock.text(currentQuestion.code);
-      codeBlock.attr("class", "language-" + currentQuestion.language);
-
-      Prism.highlightElement(codeBlock[0]);
-
-
-    }
-
-  // ================= LOAD DESCRIPTION OR QUESTION =================
-    function loadDescriptionQuestion(){
-		
-	  const descriptionQuestion = $("#description-question")
-	  
-      descriptionQuestion.show();
-      descriptionQuestion.html(currentQuestion.description_question);
-
-    }
-
- // ================= SELECT =================
-  function selectOption(selectedKey, button) {
-    if (answered) return;
-
-    answered = true;
-    const q = quiz[current];
-    const correctAnswer = q.answer;
-
-    $("#options button").prop("disabled", true);
-
-    if (selectedKey === correctAnswer) {
-      correct++;
-      button.removeClass("btn-outline-primary").addClass("btn-success");
-
-      $("#feedback")
-        .removeClass()
-        .addClass("text-success fw-bold")
-        .text("Correct!");
-    } else {
-      wrong++;
-      button.removeClass("btn-outline-primary").addClass("btn-danger");
-
-      // highlight correct answer
-      $("#options button").each(function () {
-        if ($(this).text().startsWith(correctAnswer)) {
-          $(this)
-            .removeClass("btn-outline-primary")
-            .addClass("btn-success");
-        }
-      });
-
-      $("#feedback")
-        .removeClass()
-        .addClass("text-danger fw-bold")
-        .text(`Wrong! Correct answer is ${correctAnswer}`);
-    }
+       resultConfig = result;
   }
 
-  // ================= NEXT =================
-  $("#nextBtn").on("click", function () {
-    if (!answered) {
-      alert("Please select an option!");
+
+  // ================= LOAD DATA FILE =================
+  $("#dataFileInput").on("change", function (event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      try {
+        const data = JSON.parse(e.target.result);
+
+        // Validate structure
+        if (!data.questions || !Array.isArray(data.questions)) {
+          console.error("Invalid JSON format: missing 'questions' array");
+          return;
+        }
+
+        quiz = data;
+        console.log("Quiz Loaded:", quiz);
+
+      } catch (err) {
+        console.error("Invalid JSON file", err);
+      }
+    };
+
+    reader.readAsText(file);
+  });
+
+  // ================= START =================
+  function startQuiz() {
+    if (!quiz || !quiz.questions.length) {
+      console.warn("No quiz data loaded");
       return;
     }
 
-    current++;
-
-    if (current < quiz.length) {
-      loadForm();
-    } else {
-      showResult();
-    }
-  });
-
-  // ================= REMOVE FORM COMPONENT =================
-  function hideComponents(stateHide) {
-
-      if(stateHide){
-        $("#fileInputDiv").hide();
-        $("#questionCounter").hide();
-        $("#question").hide();
-        $("#codeDiv").hide();
-        $("#description-question").hide();
-        $("#options").hide();
-        $("#nextBtn").hide();
-      }else{
-        $("#fileInputDiv").show();
-        $("#questionCounter").show();
-        $("#question").show();
-        $("#codeDiv").show();
-        $("#description-question").show();
-        $("#options").show();
-        $("#nextBtn").show();
-      }
-  }
-
-
-
-  // ================= RESULT =================
-  function showResult() {
-
-    hideComponents(true);
-
-    const total = quiz.length;
-    const percent = ((correct / total) * 100).toFixed(2);
-
-    $("#questionCounter").text("");
-    $("#question").text("");
-    $("#options").empty();
-    $("#feedback").text("");
-
-    $("#result").html(`
-      <h2 class="text-center">Quiz Completed 🎉</h2>
-      <hr>
-      <p><strong>Correct:</strong> ${correct}</p>
-      <p><strong>Wrong:</strong> ${wrong}</p>
-      <p><strong>Score:</strong> ${percent}%</p>
-    `);
-  }
-
-  // ================= RESTART =================
-  $("#restartBtn").on("click", function () {
-    quiz = [];
     current = 0;
     correct = 0;
     wrong = 0;
     answered = false;
 
-    hideComponents(true);
-	
-	$("#fileInputDiv").show();
-    $("#fileInput").val("");
-	
-	$("#restartBtn").hide();
-	
-    alert("Quiz reset. Please select a file.");
+    $("#start-page").hide();
+    $("#quiz-page").show();
+
+    loadForm();
+  }
+
+  // ================= LOAD FORM =================
+  function loadForm() {
+    console.log("Form Loaded....");
+
+
+    if (!quiz || current >= quiz.questions.length) {
+      console.log("Quiz Finished");
+      return;
+    }
+
+    validateConfig(quiz);
+
+    console.log(resultConfig);
+
+    if(resultConfig.hasExamName){
+       $("#quiz-title").html(quiz.config.exam_name);
+    }
+
+
+
+  }
+
+  // ================= QUIZ STARTED =================
+  $("#startBtn").on("click", function () {
+    console.log("Quiz Started....");
+
+    if( $("#dataFileInput").val() === "" ){
+
+        // Initialize dialog
+        $("#selectDataFileDialog").dialog({
+              autoOpen: false,
+              modal: true,
+              title: "Loop Data",
+              buttons: {
+                "OK": function () {
+                  $(this).dialog("close");
+                }
+              }
+        });
+
+
+
+       $("#selectDataFileDialog").dialog("open");
+
+    }else{
+      startQuiz();
+    }
+
   });
+
+  // ================= RESTART QUIZ  =================
+  $("#restartBtn").on("click", function () {
+    console.log("Quiz Restarted....");
+
+
+    $("#start-page").show();
+    $("#quiz-page").hide();
+
+    $("#dataFileInput").val("");
+
+
+  });
+
+
 
 
 });

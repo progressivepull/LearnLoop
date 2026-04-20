@@ -7,36 +7,41 @@
     <title>LearnLoop</title>
 
     <!-- Standard favicon -->
-    <link rel="icon" href="./app/favicon.ico" sizes="any">
+    <link rel="icon" href="./app/favicon_io/favicon.ico" sizes="any">
 
     <!-- PNG favicons -->
-    <link rel="icon" type="image/png" sizes="16x16" href="./app/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./app/favicon_io/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./app/favicon-32x32.png">
 
     <!-- Android Chrome -->
-    <link rel="icon" type="image/png" sizes="192x192" href="./app/./app/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="./app/android-chrome-512x512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./app/favicon_io/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./app/favicon_io/android-chrome-512x512.png">
 
     <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="./app/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./app/favicon_ioapple-touch-icon.png">
 
     <!-- Web App Manifest -->
-    <link rel="manifest" href="./app/site.webmanifest">
+    <link rel="manifest" href="./app/favicon_iosite.webmanifest">
 
 
     <!-- LearnLoopStylesheet -->
     <link href="./app/index.css" rel="stylesheet" />
 
     <!-- Bootstrap -->
-    <link href="./app/bootstrap.min.css" rel="stylesheet">
-    <script src="./app/bootstrap.bundle.min.js"></script>
+    <link href="./app/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <script src="./app/bootstrap/bootstrap.bundle.min.js"></script>
 
     <!-- jQuery -->
-    <script src="./app/jquery-4.0.0.min.js"></script>
+    <script src="./app/jquery/jquery-4.0.0.min.js"></script>
+
+
+    <!-- jQueryUI -->
+    <link rel="stylesheet" href="./app/jquery-ui-1.14.2/jquery-ui.css">
+    <script src="./app/jquery-ui-1.14.2/jquery-ui.min.js"></script>
 
 
     <!-- Prism -->
-    <link href="./app/prism.css" rel="stylesheet" />
+    <link href="./app/prism/prism.css" rel="stylesheet" />
 
 
 </head>
@@ -52,13 +57,24 @@
                 <!-- FILE INPUT -->
                 <div id="fileInputDiv" class="mb-3">
                     <label class="form-label">Select Questions File</label>
-                    <input type="file" id="fileInput" class="form-control" accept=".json">
+                    <input type="file" id="dataFileInput" class="form-control" accept=".json">
                 </div>
 
-                <button id="start-btn" class="btn btn-primary mt-3">Start Quiz Loop</button>
+                <button id="startBtn" class="btn btn-primary mt-3">Start Quiz Loop</button>
             </div>
 
+            <div id="quiz-page">
 
+                <!-- FILE INPUT -->
+                <div id="quiz-title"></div>
+
+               <button id="restartBtn" class="btn btn-primary mt-3">Restart Quiz Loop</button>
+            </div>
+
+        </div>
+
+        <div id="selectDataFileDialog">
+            <p><b>Select the Data Input JSON File.</b></p>
         </div>
 
 
@@ -68,6 +84,15 @@
         <div class="left">LearnLoop</div>
         <div class="right">© <span>4/18/2026</span></div>
     </footer>
+
+      <!-- Prism -->
+  <script src="./app/prism/prism.js"></script>
+  <script src="./app/prism/prism-python.min.js"></script>
+  <script src="./app/prism/prism-sql.min.js"></script>
+  <script src="./app/prism/prism-java.min.js"></script>
+
+
+  <script src="./app/app.js"></script>
 
 
 
