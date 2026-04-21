@@ -36,17 +36,19 @@ body {
 }
 
 .ui-dialog-buttonset button {
-  background: #007bff;
-  color: white;
-  border-radius: 6px;
-  padding: 5px 15px;
+    background: #007bff;
+    color: white;
+    border-radius: 6px;
+    padding: 5px 15px;
 }
 
 .ui-dialog-titlebar-close {
-  display: none !important;
+    display: none !important;
 }
 
-
+#question-description {
+    text-align: left !important;
+}
 
 footer {
     background: #222;

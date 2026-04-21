@@ -45,6 +45,11 @@ $(document).ready(function () {
     resultConfig = result;
   }
 
+  function hasValidProblemDescription(quiz, current) {
+    const q = quiz?.questions?.[current];
+    return Array.isArray(q?.problem_description);
+  }
+
 
   // ================= LOAD DATA FILE =================
   $("#dataFileInput").on("change", function (event) {
@@ -110,6 +115,8 @@ $(document).ready(function () {
       $("#quiz-title").html(quiz.config.exam_name);
     }
 
+    loadDescriptionQuestion();
+
 
 
   }
@@ -155,7 +162,22 @@ $(document).ready(function () {
 
   });
 
+  // ================= QUESTION DESCRIPTION =================
+  function loadDescriptionQuestion() {
+    const questionDescription = $("#question-description");
+    const desc = quiz?.questions?.[current]?.problem_description;
 
+    if (!Array.isArray(desc)) {
+      questionDescription.html("");   // clear if missing
+      return;
+    }
 
+    // Join each .line into HTML paragraphs or line breaks
+    const html = desc
+      .map(item => `<div>${item.line}</div>`)
+      .join("<br>");
+
+    questionDescription.html(html);
+  }
 
 });
