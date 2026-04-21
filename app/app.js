@@ -13,22 +13,36 @@ $(document).ready(function () {
   $("#selectDataFileDialog").hide();
 
   function validateConfig(json) {
-        const result = {
-          hasExamName: false,
-          hasShuffleQuestions: false,
-        };
+    const result = {
+      hasExamName: false,
+      hasShuffleQuestions: false,
+      hasShuffleOption: false,
+      hasTimeLimitMinutes: false
 
-        // Check exam_name
-        if (json?.config?.exam_name) {
-          result.hasExamName = true;
-        }
+    };
 
-        // Check shuffle_questions
-        if (typeof json?.config?.shuffle_questions === "boolean") {
-          result.hasShuffleQuestions = true;
-        }
+    // Check exam_name
+    if (json?.config?.exam_name) {
+      result.hasExamName = true;
+    }
 
-       resultConfig = result;
+    // Check shuffle_questions
+    if (typeof json?.config?.shuffle_questions === "boolean") {
+      result.hasShuffleQuestions = true;
+    }
+
+    // Check shuffle_options
+    if (typeof json?.config?.shuffle_options === "boolean") {
+      result.hasShuffleOption = true;
+    }
+
+    // Check time_limit_minutes
+    if (Number.isFinite(json?.config?.time_limit_minutes)) {
+      result.hasTimeLimitMinute = true;
+    }
+
+
+    resultConfig = result;
   }
 
 
@@ -92,8 +106,8 @@ $(document).ready(function () {
 
     console.log(resultConfig);
 
-    if(resultConfig.hasExamName){
-       $("#quiz-title").html(quiz.config.exam_name);
+    if (resultConfig.hasExamName) {
+      $("#quiz-title").html(quiz.config.exam_name);
     }
 
 
@@ -104,25 +118,25 @@ $(document).ready(function () {
   $("#startBtn").on("click", function () {
     console.log("Quiz Started....");
 
-    if( $("#dataFileInput").val() === "" ){
+    if ($("#dataFileInput").val() === "") {
 
-        // Initialize dialog
-        $("#selectDataFileDialog").dialog({
-              autoOpen: false,
-              modal: true,
-              title: "Loop Data",
-              buttons: {
-                "OK": function () {
-                  $(this).dialog("close");
-                }
-              }
-        });
+      // Initialize dialog
+      $("#selectDataFileDialog").dialog({
+        autoOpen: false,
+        modal: true,
+        title: "Loop Data",
+        buttons: {
+          "OK": function () {
+            $(this).dialog("close");
+          }
+        }
+      });
 
 
 
-       $("#selectDataFileDialog").dialog("open");
+      $("#selectDataFileDialog").dialog("open");
 
-    }else{
+    } else {
       startQuiz();
     }
 
