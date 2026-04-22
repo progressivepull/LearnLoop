@@ -53,6 +53,9 @@
     <div class=" content container mt-5">
         <div class="card shadow p-4">
 
+            <button id="restartBtn" class="btn btn-primary mt-3"><b>Restart quiz Loop</b></button>
+            <br>
+
             <div id="start-page">
                 <!-- FILE INPUT -->
                 <div id="fileInputDiv" class="mb-3">
@@ -60,7 +63,7 @@
                     <input type="file" id="dataFileInput" class="form-control" accept=".json">
                 </div>
 
-                <button id="startBtn" class="btn btn-primary mt-3">Start Quiz Loop</button>
+                <button id="startBtn" class="btn btn-primary mt-3"><b>Start Quiz Loop</b></button>
             </div>
 
             <div id="quiz-page">
@@ -68,16 +71,51 @@
                 <!-- FILE INPUT -->
                 <div id="quiz-title"></div>
 
+                <!-- QUESTION NUMBER -->
+	            <p id="questionNo" class="fw-bold mb-2 text-primary"></p>
+
+                <!-- COUNTER -->
+                <div id="questionCounter" class="fw-bold mb-2 text-primary"></div>
+
+                <div id="progressbar"></div>
+                <br>
+
                 <!-- QUESTION DESCRIPTION  -->
                 <p id="question-description"></p>
 
-                <button id="restartBtn" class="btn btn-primary mt-3">Restart Quiz Loop</button>
+                <!-- QUESTION -->
+                <p id="question"></p>
+
+                <!-- CODE  -->
+                <div id="prismDiv"></div>
+
+                <!-- OPTIONS -->
+                <div id="options" class="mt-3"></div>
+
+                <button id="nextBtn" class="btn btn-success mt-3"><b>Next Question</b></button>
+                <br>
+	           <button id="openExplanationBtn" class="btn btn-info mt-3"><b>Explanation Link</b></button>
+                <br>
+	           <button id="openTermsBtn" class="btn btn-warning mt-3"><b>Terms Link</b></button>
+            </div>
+
+            <div id="result-page">
+
+                    <!-- RESULT SUMMARY -->
+                    <h4 id="result" class="mt-4"></h4>
+
             </div>
 
         </div>
 
+
+
         <div id="selectDataFileDialog">
             <p><b>Select the Data Input JSON File.</b></p>
+        </div>
+
+        <div id="selectOptionDialog">
+            <p><b>Please select an option!</b></p>
         </div>
 
 
