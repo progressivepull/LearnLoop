@@ -1,0 +1,171 @@
+{
+  "config": {
+    "version": "",
+    "exam_name": "",
+    "link_base_url": "",
+    "link_folder_name": "",
+    "link_file_name": "",
+    "link_terms": "",
+    "shuffle_questions": true,
+    "shuffle_options": true,
+    "time_limit_minutes": 60
+  },
+  "questions": [
+    {
+      "id": 1,
+      "problem_description": [
+        {
+          "line": "The data engineering team has configured a Databricks SQL query and alert to monitor the values in a Delta Lake table."
+        },
+        {
+          "line": "The <b>recent_sensor_recordings</b> table contains an identifying <b>sensor_id</b> alongside the timestamp and temperature for the most recent 5 minutes of recordings."
+        },
+        {
+          "line": "The below query is used to create the alert."
+        }
+      ],
+      "question": [
+        {
+          "line": "The query is set to refresh each minute and always completes in less than 10 seconds."
+        },
+        {
+          "line": "The alert is set to trigger when mean (temperature) > 120."
+        },
+        {
+          "line": "Notifications are triggered to be sent at most every 1 minute."
+        },
+        {
+          "line": "If this alert raises notifications for 3 consecutive minutes and then stops, which statement must be true?"
+        }
+      ],
+      "options": {
+        "A": "The total average temperature across all sensors exceeded 120 on three consecutive executions of the query",
+        "B": "The recent_sensor_recordings table was unresponsive for three consecutive runs of the query",
+        "C": "The source query failed to update properly for three consecutive minutes and then restarted",
+        "D": "The maximum temperature recording for at least one sensor exceeded 120 on three consecutive  executions of the query",
+        "E": "The average temperature recordings for at least one sensor exceeded 120 on three consecutive executions of the query"
+      },
+      "answer": "E",
+      "resource": {
+        "code": {
+          "lines": [
+            {
+              "line": "SELECT MEAN (temperature), MAX(temperature), MIN(temperature)"
+            },
+            {
+              "line": "        FROM recent_sensor_recordings"
+            },
+            {
+              "line": "        GROUP BY senor_id"
+            }
+          ],
+          "language": "SQL"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "problem_description": [
+        {
+          "line": "A junior developer complains that the code in their notebook isn't producing the correct results in the development environment."
+        },
+        {
+          "line": "A shared screenshot reveals that while they're using a notebook versioned with Databricks Repos, they're using a personal branch that contains old logic."
+        },
+        {
+          "line": "The desired branch named dev-2.3.9 is not available from the branch selection dropdown."
+        }
+      ],
+      "question": [
+        {
+          "line": "Which approach will allow this developer to review the current logic for this notebook?"
+        }
+      ],
+      "options": {
+        "A": "Use Repos to make a pull request use the Databricks REST API to update the current branch to  dev-2.3.9",
+        "B": "Use Repos to pull changes from the remote Git repository and select the dev-2.3.9 branch.",
+        "C": "Use Repos to checkout the dev-2.3.9 branch and auto-resolve conflicts with the current branch",
+        "D": "Merge all changes back to the main branch in the remote Git repository and clone the repo again",
+        "E": "Use Repos to merge the current branch and the dev-2.3.9 branch, then make a pull request to sync with the remote repository"
+      },
+      "answer": "B",
+      "resource": {
+        "code": {
+          "lines": [
+            {
+              "line": ""
+            }
+          ],
+          "language": ""
+        }
+      }
+    },
+    {
+      "id": 3,
+      "problem_description": [
+        {
+          "line": "The security team is exploring whether or not the Databricks secrets module can be leveraged for connecting to an external database."
+        },
+        {
+          "line": "After testing the code with all Python variables being defined with strings, they upload the password to the secrets module and configure the correct permissions for the currently active user."
+        },
+        {
+          "line": "They then modify their code to the following (leaving all other variables unchanged)."
+        }
+      ],
+      "question": [
+        {
+          "line": "Which statement describes what will happen when the above code is executed?"
+        }
+      ],
+      "options": {
+        "A": "The connection to the external table will fail; the string \"REDACTED\" will be printed.",
+        "B": "An interactive input box will appear in the notebook; if the right password is provided, the connection will succeed and the encoded password will be saved to DBFS.",
+        "C": "An interactive input box will appear in the notebook; if the right password is provided, the connection will succeed and the password will be printed in plain text.",
+        "D": "The connection to the external table will succeed; the string value of password will be printed in plain text.",
+        "E": "The connection to the external table will succeed; the string \"REDACTED\" will be printed."
+      },
+      "answer": "E",
+      "resource": {
+        "code": {
+          "lines": [
+            {
+              "line": "password = dbutils.secrets.get(scope=\"db_creds\",key=\"jbdc_password)"
+            },
+            {
+              "line": ""
+            },
+            {
+              "line": "print(password)"
+            },
+            {
+              "line": ""
+            },
+            {
+              "line": "df = (spark"
+            },
+            {
+              "line": "    .read(\"jdbc\")"
+            },
+            {
+              "line": "    .option(\"url\", connection)"
+            },
+            {
+              "line": "    .option(\"dbtable\",tablename)"
+            },
+            {
+              "line": "    .option(\"user\", username)"
+            },
+            {
+              "line": "    .option(\"password\"password)"
+            },
+            {
+              "line": "    )"
+            }
+          ],
+          "language": "python"
+        }
+      }
+    }
+  ]
+}

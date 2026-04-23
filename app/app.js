@@ -328,22 +328,28 @@ $(document).ready(function () {
 
   // ================= QUESTION DESCRIPTION =================
   function loadDescriptionQuestion() {
+	  
+	const questionDescription = $("#question-description");
 
     if(resultQuestions.hasProblemDescription){
-          const questionDescription = $("#question-description");
+          
           const desc = quiz?.questions?.[current]?.problem_description;
 
           renderLines(questionDescription, desc);
-    }
+    }else{
+		$("#question-description").empty();
+	}
 
 
   }
 
    // ================= QUESTION ============
   function loadQuestion() {
+	  
+	const $question = $("#question");
 
     if(resultQuestions.hasQuestion){
-      const question = $("#question");
+      
       const quest = quiz?.questions?.[current]?.question;
 
       const total = quiz?.questions?.length;
@@ -351,7 +357,7 @@ $(document).ready(function () {
 
       answered = false;
 
-      renderLines(question, quest);
+      renderLines($question, quest);
 
       // Counter
       questionCounter.text(`Question ${current + 1} of ${total}`);
@@ -367,6 +373,8 @@ $(document).ready(function () {
       });
 
 
+   }else{
+	   $question.empty();
    }
 
   }
@@ -374,24 +382,41 @@ $(document).ready(function () {
   // ================= CODE =================
 
    function loadCode() {
+	   
+        const lines = quiz?.questions?.[current]?.resource?.code?.lines;
 
-      if(resultQuestions.hasCode){
+		// Check if valid array and ALL items are empty strings (safe)
+		const allEmpty =
+		  Array.isArray(lines) &&
+		  lines.length > 0 &&
+		  lines.every(item => typeof item === "object" && lines[0].line === "");
 
-          const question = quiz?.questions?.[current];
+		// Hide if:
+		// - not an array
+		// - OR all lines are empty
+		// - OR code shouldn't be shown
+		if (!Array.isArray(lines) || allEmpty || !resultQuestions?.hasCode) {
+		  $("#prismDiv").hide();
+		  return;
+		}
 
-          if(question.resource.code.lines.length > 0){
+		// At this point we have valid, non-empty code
+		const question = quiz?.questions?.[current];
 
-              const codeHTML = renderPrismCode(question.resource.code);
-              $("#prismDiv").html(codeHTML);
-              Prism.highlightAll();
-
-          }
-
-      }else{
-            $("#prismDiv").hide();
-      }
+		if (question?.resource?.code?.lines?.length > 0) {
+		  const codeHTML = renderPrismCode(question.resource.code);
+		  $("#prismDiv").html(codeHTML);
+		  Prism.highlightAll();
+		  $("#prismDiv").show();
+		} else {
+		  $("#prismDiv").hide();
+		}
+	
 
    }
+   
+   
+	   
 
    //=============== OPTIONS ================
 
