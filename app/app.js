@@ -521,18 +521,36 @@ $(document).ready(function () {
   // ================= EXPLANATION LINK =================
   $("#openExplanationBtn").click(function () {
 
-      const linkBaseUrl = quiz?.config?.link_base_url;
+      const linkExplanationBaseUrl = quiz?.config?.link_explanation_base_url;
 
-      let folderName = quiz?.config?.link_folder_name;
-      const linkFolderName = folderName.replace("*", quiz?.questions[current]?.id);
+      let folderExplanationName = quiz?.config?.link_explanation_folder_name;
+      const linkExplanationFolderName = folderExplanationName.replace("*", quiz?.questions[current]?.id);
 
-      let fileName = quiz?.config?.link_file_name;
-      const linkFileName = folderName.replace("*", quiz?.questions[current]?.id);
+      let fileExplanationName = quiz?.config?.link_explanation_file_name;
+      const linkExplanationFileName = folderExplanationName.replace("*", quiz?.questions[current]?.id);
 
-      var fullExplanationUrl = linkBaseUrl + "/" + linkFolderName + "/" + linkFileName + ".md";
+      var fullExplanationUrl = linkExplanationBaseUrl + "/" + linkExplanationFolderName + "/" + linkExplanationFileName + ".md";
 
       // Open in new tab
       window.open(fullExplanationUrl, "_blank");
+
+  });
+  
+   // ================= Answer LINK =================
+  $("#openAnswerBtn").click(function () {
+
+      const linkAnswerBaseUrl = quiz?.config?.link_answer_base_url;
+
+      let folderAnswerName = quiz?.config?.link_answer_folder_name;
+      const linkAnswerFolderName = folderAnswerName.replace("*", quiz?.questions[current]?.id);
+
+      let fileAnswerName = quiz?.config?.link_answer_file_name;
+      const linkAnswerFileName = folderAnswerName.replace("*", quiz?.questions[current]?.id);
+
+      var fullAnswerUrl = linkAnswerBaseUrl + "/" + linkAnswerFolderName + "/" + linkAnswerFileName + ".md";
+
+      // Open in new tab
+      window.open(fullAnswerUrl, "_blank");
 
   });
 
