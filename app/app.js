@@ -565,6 +565,19 @@ $(document).ready(function () {
       window.open(fullTermsUrl, "_blank");
 
   });
+  
+  
+  // ================= README CONTENT LINK =================
+  $("#readmeContentBtn").click(function () {
+
+      const readmeContentUrl = quiz?.config?.readme_content;
+
+      var fullReadmeContentUrl = readmeContentUrl + ".md";
+
+      // Open in new tab
+      window.open(fullReadmeContentUrl, "_blank");
+
+  });
 
   // ================= RESULT =================
   function showResult() {
